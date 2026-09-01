@@ -29,6 +29,10 @@ public/uploads/
 # Freebuff
 .freebuff/
 
+# Preview files
+preview-react.html
+preview.html
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

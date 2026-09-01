@@ -276,7 +276,7 @@ export default function PaymentForm({ clientSecret, amount, onPaymentSuccess, on
                 style={{ width: '100%', padding: '12px 16px', border: '1.5px solid var(--border)', borderRadius: 'var(--radius-sm)', fontSize: '.92rem' }}
               />
               <p style={{ fontSize: '.75rem', color: 'var(--text-muted)', marginTop: 4 }}>
-                Test mode: use 251900000000 for success, 251911111111 for insufficient funds
+                Test mode: use 251900000000 for success. On the Chapa page, select <strong>"Test Card Payment"</strong> and click <strong>"Pay using Test Mode"</strong>.
               </p>
             </div>
           )}
@@ -293,6 +293,9 @@ export default function PaymentForm({ clientSecret, amount, onPaymentSuccess, on
                 {selectedMethod === 'bank_transfer' ? `$${amount.toFixed(2)} USD / ~ETB ${Math.round(amount * 155).toLocaleString()}` : `~ETB ${Math.round(amount * 155).toLocaleString()}`}
               </strong>
               <span style={{ fontSize: '.75rem', marginLeft: 6 }}>(approximate ETB conversion)</span>
+            </div>
+            <div style={{ marginTop: 8, padding: '8px 12px', background: '#FFF3CD', borderRadius: 6, fontSize: '.8rem', color: '#856404', border: '1px solid #FFEAA7' }}>
+              <strong>Testing Tip:</strong> On the Chapa checkout page, click <strong>"Test Card Payment"</strong> on the left, then <strong>"Pay using Test Mode"</strong>. Mobile money test payments may show an error but still process successfully.
             </div>
           </div>
 

@@ -38,9 +38,8 @@ export default function Checkout() {
 
   useEffect(() => {
     if (!user) navigate('/login')
-    if (items.length === 0 && step !== 3) navigate('/shop')
 
-    // Handle Chapa return
+    // Handle Chapa return FIRST (before cart check)
     const params = new URLSearchParams(window.location.search)
     const paymentStatus = params.get('payment')
     const txRef = params.get('tx_ref')
@@ -51,13 +50,29 @@ export default function Checkout() {
           // Payment succeeded - create the order
           handlePaymentSuccess(`chapa_${txRef}`)
         } else {
-          setErrors({ payment: 'Payment is being processed. You will receive confirmation shortly.' })
+          // Wait 2 seconds and check again (Chapa callback may be processing)
+          setTimeout(() => {
+            api.checkChapaStatus(txRef).then(tx2 => {
+              if (tx2.status === 'verified') {
+                handlePaymentSuccess(`chapa_${txRef}`)
+              } else {
+                setErrors({ payment: 'Payment is being processed. You will receive confirmation shortly. Check your account page for updates.' })
+                setStep(3)
+              }
+            }).catch(() => {
+              setErrors({ payment: 'Payment verification pending. Check your account page for updates.' })
+              setStep(3)
+            })
+          }, 2000)
         }
       }).catch(() => {
-        setErrors({ payment: 'Payment verification pending. Check your email for confirmation.' })
+        setErrors({ payment: 'Payment verification pending. Check your account page for updates.' })
+        setStep(3)
       })
       // Clean up URL params
       window.history.replaceState({}, '', '/#/checkout')
+    } else if (items.length === 0 && step !== 3) {
+      navigate('/shop')
     }
   }, [user, items, step, navigate])
 

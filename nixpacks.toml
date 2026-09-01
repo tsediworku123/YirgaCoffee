@@ -1,5 +1,8 @@
+# Nixpacks configuration for Railway deployment
+# Installs build tools needed for better-sqlite3 native compilation
+
 [phases.setup]
-cmds = ["apt-get update && apt-get install -y python3 make g++"]
+nixPkgs = ["python3", "gcc", "gnumake", "nodejs"]
 
 [phases.build]
 cmds = ["npm install", "npm run build"]
